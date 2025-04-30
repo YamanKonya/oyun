@@ -7,7 +7,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
+
 import { Label } from "@/components/ui/label";
 import {
   Select,
@@ -103,32 +103,24 @@ if(!backCounter)  return (
         <CardContent>
           <form>
             <div className="grid w-full items-center gap-4">
-              <div className="flex flex-col space-y-1.5">
-                <Label htmlFor="name">İsminiz</Label>
-                <Input
-                  value={props.name}
-                  onChange={(e) => props.setName(e.target.value)}
-                  id="name"
-                  placeholder="Name of your project"
-                />
-              </div>
-              <div className="flex flex-col space-y-1.5">
+              <div className="flex flex-col space-y-1.5 w-[100%]">
                 <Label htmlFor="framework">Lütfen Süre seçininz</Label>
-                <Select
+                <Select 
+                
                   defaultValue="5"
                   value={props.timer}
                   onValueChange={(val: string) => props.setTimer(val)}
                 >
-                  <SelectTrigger id="framework">
+                  <SelectTrigger className="w-[100%]" id="framework">
                     <SelectValue placeholder="Select" />
                   </SelectTrigger>
                   <SelectContent position="popper">
-                    <SelectItem value="0.75">0.75</SelectItem>
+                    <SelectItem value="0.35">0.35</SelectItem>
+                    <SelectItem value="0.45">0.45</SelectItem>
+                    <SelectItem value="0.50">0.50</SelectItem>
                     <SelectItem value="1">1</SelectItem>
                     <SelectItem value="3">3</SelectItem>
                     <SelectItem value="5">5</SelectItem>
-                    <SelectItem value="7">7</SelectItem>
-                    <SelectItem value="10">10</SelectItem>
                     <SelectItem value="15">15</SelectItem>
                   </SelectContent>
                 </Select>
@@ -138,9 +130,9 @@ if(!backCounter)  return (
         </CardContent>
         <CardFooter className="w-[100%]">
           <Button
-            disabled={props.name === "" || props.timer === ""}
+            disabled={props.timer === ""}
             onClick={() =>
-              props.name !== "" && props.timer !== ""
+               props.timer !== ""
                 ? setBackCounter(true)
                 : null
             }
@@ -170,6 +162,7 @@ const Game = (props:IGame) => {
     const falseSelected = useRef<string[]>([]);
     const [closeImage,setCloseImage] = useState(false);
     const [answers,setAnswers] = useState<string[]>([]);
+    const [finish,setFinish] = useState(false);
 
     useEffect(()=>{
         HandleMemmoryCard();
@@ -185,7 +178,7 @@ const Game = (props:IGame) => {
 
     const createAnswers= (selected:string) =>{
        
-        let index =Math.floor(Math.random()*images.length ) 
+        let index =Math.floor(Math.random()*images.length-1 ) 
               
 
             for(let x= 0 ; x < (index < 5 ? 4 : index) ; x++){
@@ -207,12 +200,13 @@ const Game = (props:IGame) => {
         setAnswers([]);
         const selected = images[Math.floor(Math.random()*images.length-1)]
         console.log(selected);
-     
+
+        if(!selected) return HandleMemmoryCard();
 
     console.log(selectedImage)
     
     if(oldSelectedImages.length-1 === images.length-1){
-      return props.setFinish(true);  
+      return setFinish(true);  
     }
 
     if(oldSelectedImages.indexOf(selected) > -1){
@@ -243,8 +237,12 @@ const Game = (props:IGame) => {
     if(selectedImage === answer){
         alert('Doğru Cevap');
         setOldSelectedImages((prev)=>[...prev,answer]);
+
     } else{
         alert("Yanlış Cevap");
+        setOldSelectedImages((prev)=>[...prev,answer]);
+
+
     }
     HandleMemmoryCard();
 
@@ -252,19 +250,25 @@ const Game = (props:IGame) => {
 
 
 
-  return <div className="flex flex-col justify-center items-center min-h-screen">
-         <img src={selectedImage} alt="bil bakalım" className={`max-w-[500px] ${closeImage ? 'hidden' :'block'}`}/>
+  return ( <div className="flex flex-col justify-center items-center min-h-screen">
+         
 
-        <div className= {`mt-20 pl-10 pr-10 flex space-x-4`}>
-           
-           {answers.map((a,i)=>
-        (
-            <img src={a} key={i} onClick={()=>HandleForm(a)} alt="sec bakalim" className="max-w-[250px]" />
-        ))}
 
-        </div>
+         {
+          finish ? (<h2 className=""> Oyun bitti <span className="text-blue-500 cursor-pointer" onClick={()=>window.location.reload()}> Tekrar başlamak için tıkla</span> </h2>) : ( <> <img src={selectedImage} alt="bil bakalım" className={`max-w-[500px] ${closeImage ? 'hidden' :'block'}`}/>
 
-  </div>;
+            <div className= {`mt-20 pl-10 pr-10 flex space-x-4`}>
+               
+               {answers.map((a,i)=>
+            (
+                <img src={a} key={i} onClick={()=>HandleForm(a)} alt="sec bakalim" className="max-w-[250px]" />
+            ))}
+      
+            </div> </>)
+         }
+ 
+
+  </div> );
 };
 
 
