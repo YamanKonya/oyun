@@ -187,8 +187,7 @@ const Game = (props:IGame) => {
                     }
             }
             falseSelected.current.push(selected);
-            falseSelected.current = karistirDizi(falseSelected.current)
-            setAnswers(falseSelected.current);
+            setAnswers(karistirDizi(falseSelected.current));
     }
 
 
