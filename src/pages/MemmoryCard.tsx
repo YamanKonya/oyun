@@ -256,7 +256,7 @@ const Game = (props:IGame) => {
 
 
          {
-          finish ? (<h2 className=""> Oyun bitti <span className="text-blue-500 cursor-pointer" onClick={()=>window.location.reload()}> Tekrar başlamak için tıkla</span> </h2>) : ( <> <img src={selectedImage} alt="bil bakalım" className={`max-w-[500px] ${closeImage ? 'hidden' :'block'}`}/>
+          finish ? (<h2 className="text-[45px]"> Oyun bitti <span className="text-blue-500 cursor-pointer" onClick={()=>window.location.reload()}> Tekrar başlamak için tıkla</span> </h2>) : ( <> <img src={selectedImage} alt="bil bakalım" className={`max-w-[500px] ${closeImage ? 'hidden' :'block'}`}/>
 
             <div className= {`mt-20 pl-10 pr-10 flex space-x-4`}>
                
