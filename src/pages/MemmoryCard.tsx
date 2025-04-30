@@ -178,16 +178,18 @@ const Game = (props:IGame) => {
 
     const createAnswers= (selected:string) =>{
        
-        let index =Math.floor(Math.random()*images.length-1 ) 
-              
+        let trueAnswerIndex = images.indexOf(selected);
+        let index1 =Math.floor(Math.random()*images.length )
+        let index2 =Math.floor(Math.random()*images.length ) 
+        let index3 =Math.floor(Math.random()*images.length ) 
 
-            for(let x= 0 ; x < (index < 5 ? 4 : index) ; x++){
-                    if(selected !== images[x] && falseSelected.current.indexOf(images[x]) <= -1 && falseSelected.current.length <3){
-                        falseSelected.current.push(images[x]);
-                    }
-            }
-            falseSelected.current.push(selected);
-            setAnswers(karistirDizi(falseSelected.current));
+        if(index1 === index2 || index1 === index3 || index2 === index3 || trueAnswerIndex === index1 || trueAnswerIndex === index2 || trueAnswerIndex === index3){
+        return  createAnswers(selected);
+        }
+
+        setAnswers(karistirDizi(karistirDizi([images[index1],images[index2],images[index3],selected])));
+
+              
     }
 
 
@@ -223,7 +225,7 @@ const Game = (props:IGame) => {
     setTimeout(()=>{
 
         createAnswers(selected);
-    },200);
+    },800);
 
    },props.time*1000);
    
